@@ -1,6 +1,7 @@
+# Dùng bản apache để có sẵn máy chủ web
 FROM php:7.4-apache 
-# (Khuyên dùng bản -apache để chạy web luôn, nếu dùng -fpm bạn sẽ cần thêm Nginx)
 
+# Cài đặt các thư viện hệ thống cần thiết
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -10,16 +11,16 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd mysqli
+# Cài đặt các extension PHP để chạy MySQL và các hàm xử lý chuỗi
+RUN docker-php-ext-install pdo_mysql mbstring mysqli
 
-# SỬA Ở ĐÂY: Trỏ đúng vào thư mục html của Apache
+# QUAN TRỌNG: Chuyển vào đúng thư mục mà Apache yêu cầu
 WORKDIR /var/www/html
 
-# Copy toàn bộ code vào /var/www/html
+# Copy toàn bộ code vào đúng thư mục html
 COPY . /var/www/html
 
-# Cấp quyền cho user của web server
+# Cấp quyền cho Apache có thể đọc/ghi file
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
