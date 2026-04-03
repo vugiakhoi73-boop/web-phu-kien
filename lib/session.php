@@ -31,11 +31,10 @@ class Session
    public static function checkSession()
    {
       self::init();
-      if (self::get("user") == false) {
-         if ($type == 'admin') {
-            header("Location:../login.php");
-         }
-         header("Location:login.php");
+      if (self::get("login") == false) {
+          self::destroy();
+          header("Location:login.php");
+          exit();
       }
    }
 
