@@ -28,7 +28,7 @@ class Session
       }
    }
 
-   public static function checkSession($type)
+   public static function checkSession()
    {
       self::init();
       if (self::get("user") == false) {
