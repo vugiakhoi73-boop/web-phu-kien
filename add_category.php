@@ -1,13 +1,18 @@
 <?php
 include '../lib/session.php';
+include '../classes/categories.php';
 Session::checkSession('admin');
 $role_id = Session::get('role_id');
 if ($role_id == 1) {
-    header("Location:productlist.php");
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
+        $category = new categories();
+        $result = $category->insert($_POST['name']);
+    }
 } else {
     header("Location:../index.php");
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +25,7 @@ if ($role_id == 1) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://use.fontawesome.com/2145adbb48.js"></script>
     <script src="https://kit.fontawesome.com/a42aeb5b72.js" crossorigin="anonymous"></script>
-    <title>Admin</title>
+    <title>Thêm mới danh mục</title>
 </head>
 
 <body>
@@ -31,32 +36,28 @@ if ($role_id == 1) {
         </label>
         <label class="logo">ADMIN</label>
         <ul>
-        <li><a href="productlist.php" class="active">Quản lý Sản phẩm</a></li>
-            <li><a href="categoriesList.php">Quản lý Danh mục</a></li>
+            <li><a href="productlist.php" >Quản lý Sản phẩm</a></li>
+            <li><a href="categoriesList.php" class="active" >Quản lý danh mục</a></li>
             <li><a href="orderlist.php">Quản lý Đơn hàng</a></li>
             <li><a href="userlist.php">Quản lý Người dùng</a></li>
         </ul>
     </nav>
-    <footer>
-        <div class="social">
-            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+    <div class="title">
+        <h1>Thêm mới danh mục</h1>
+    </div>
+    <div class="container">
+        <p style="color: green;"><?= !empty($result) ? $result : '' ?></p>
+        <div class="form-add">
+            <form action="add_category.php" method="post">
+                <label for="name">Tên danh mục</label>
+                <input type="text" id="name" name="name" placeholder="Tên danh mục.." required>
+
+                <input type="submit" value="Lưu" name="submit">
+            </form>
         </div>
-        <ul class="list">
-            <li>
-                <a href="#">Home</a>
-            </li>
-            <li>
-                <a href="#">Product</a>
-            </li>
-            <li>
-                <a href="#">Contact</a>
-            </li>
-            <li>
-                <a href="#">About</a>
-            </li>
-        </ul>
+    </div>
+    </div>
+    <footer>
         <p class="copyright">copy by HKT-SHOP.com 2022</p>
     </footer>
 </body>
