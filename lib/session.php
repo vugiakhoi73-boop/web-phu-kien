@@ -30,12 +30,14 @@ class Session
 
    public static function checkSession()
    {
-      self::init();
+     /*   
+     self::init();
       if (self::get("login") == false) {
           self::destroy();
           header("Location:login.php");
           exit();
       }
+      */
    }
 
    public static function checkLogin()
